@@ -15,16 +15,20 @@ int main(int argc, char* argv[])
 		{
 			done = true;
 		}
-		else if(solver.openFile(prompt))
+		else 
 		{
-			// On boucle pour resoudre les problemes que l'on trouve dans le fichier
-			bool end = false;
-			while(!end)
-			{
-				end = true;
-			}
+			std::ifstream file = solver.openFile(prompt);
+			if(file){
+				solver.readProblem(file);
+				// On boucle pour resoudre les problemes que l'on trouve dans le fichier
+				bool end = false;
+				while(!end)
+				{
+					end = true;
+				}
 
-			solver.closeFiles(); // On demande la fermeture du fichier
+				solver.closeFiles(); // On demande la fermeture du fichier
+			}
 		}
 		else
 		{

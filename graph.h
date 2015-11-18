@@ -7,6 +7,8 @@
 #include <iostream>
 #include <vector>
 #include <string.h>
+#include <fstream>
+#include <unistd.h>
 
 
 // Definit la taille maximale de la matrice des obstacles d'un probleme
@@ -36,7 +38,7 @@ class graph
 		virtual ~graph();
 		
 
-		bool openFile(std::string fName);
+		std::ifstream openFile(const std::string fName);
 		bool closeFiles();
 
 		
@@ -65,7 +67,7 @@ class graph
 
 		void bfs();
 
-		void readProblem(); // Lit un probleme dans le fichier d'entree et renseigne n m problem xStart yStart xGoal yGoal dirStart
+		void readProblem(std::ifstream); // Lit un probleme dans le fichier d'entree et renseigne n m problem xStart yStart xGoal yGoal dirStart
 		void writeSolution(); // Ecrit la solution dans le fichier resultat
 		
 };

@@ -1,5 +1,6 @@
 #include "graph.h"
 
+using namespace std;
 
 graph::graph()
 {
@@ -12,11 +13,15 @@ graph::~graph()
 }
 
 
-bool graph::openFile(std::string fName)
+ifstream graph::openFile(const std::string fName)
 {
-	bool res = false;
+	ifstream file;
+	file = open(fName, ios::in);
+	if (!file){
+		cerr << "Impossible d'ouvrir le fichier!" << endl;
+	}
 	
-	return res;
+	return file;
 }
 
 bool graph::closeFiles()
@@ -27,25 +32,31 @@ bool graph::closeFiles()
 }
 
 
-void createGraph()
+void graph::createGraph()
 {
 
 }
 
 
-void bfs()
+void graph::bfs()
 {
 
 }
 
 
-void readProblem()
+void graph::readProblem(ifstream file)
 {
-
+	file >> this->n >> this->m;
+	for(size_t i=0; i<n; i++){
+		for(size_t j=0; j<m; j++){
+			file >> problem[i][j];
+		}
+	}
+	file >> this->xStart >> this->yStart >> this->xGoal >> this->yGoal >> this->dirStart;
 }		
 
 
-void writeSolution()
+void graph::writeSolution()
 {
 
 }
