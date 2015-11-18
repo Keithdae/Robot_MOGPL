@@ -19,9 +19,33 @@ bool graph::openFile(std::string fName)
 	return res;
 }
 
-bool graph::closeFile()
+bool graph::closeFiles()
 {
 	bool res = false;
 	
 	return res;
+}
+
+
+void createGraph()
+{
+
+}
+
+
+void bfs()
+{
+
+}
+
+
+void readProblem()
+{
+
+}		
+
+
+void writeSolution()
+{
+
 }

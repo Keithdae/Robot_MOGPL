@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 		{
 			done = true;
 		}
-		else if(solver.openFile("prompt"))
+		else if(solver.openFile(prompt))
 		{
 			// On boucle pour resoudre les problemes que l'on trouve dans le fichier
 			bool end = false;
@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 				end = true;
 			}
 
-			solver.closeFile(); // On demande la fermeture du fichier
+			solver.closeFiles(); // On demande la fermeture du fichier
 		}
 		else
 		{
