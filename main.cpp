@@ -5,7 +5,6 @@ int main(int argc, char* argv[])
 	bool done = false;
 	std::string prompt = "";
 
-	graph solver = graph();
 
 	while(!done)
 	{
@@ -15,25 +14,27 @@ int main(int argc, char* argv[])
 		{
 			done = true;
 		}
-		else 
+		else
 		{
-			std::ifstream file = solver.openFile(prompt);
-			if(file){
-				solver.readProblem(file);
+			graph solver = graph(prompt);
+			if(solver.isFileOpen())
+			{
+				solver.readProblem();
 				// On boucle pour resoudre les problemes que l'on trouve dans le fichier
 				bool end = false;
 				while(!end)
 				{
 					end = true;
 				}
-
-				solver.closeFiles(); // On demande la fermeture du fichier
+				//solver.detruire();
+			}
+			else
+			{
+				std::cout << "L'ouverture du fichier a echoue" << std::endl;
+				//solver.detruire(); 
 			}
 		}
-		else
-		{
-			std::cout << "L'ouverture du fichier a echoue" << std::endl; 
-		}
+		
 	}
 	std::cout << "Bye bye !" << std::endl;
 	return 0;

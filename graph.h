@@ -38,11 +38,14 @@ class graph
 		virtual ~graph();
 		
 
-		std::ifstream openFile(const std::string fName);
+		bool openFile(const std::string fName);
 		bool closeFiles();
+
+		void readProblem(); // Lit un probleme dans le fichier d'entree et renseigne n m problem xStart yStart xGoal yGoal dirStart
 
 		
 	private:
+		std::ifstream *file;
 		int xStart;
 		int yStart;
 		int xGoal;
@@ -67,7 +70,7 @@ class graph
 
 		void bfs();
 
-		void readProblem(std::ifstream); // Lit un probleme dans le fichier d'entree et renseigne n m problem xStart yStart xGoal yGoal dirStart
+		
 		void writeSolution(); // Ecrit la solution dans le fichier resultat
 		
 };
