@@ -13,18 +13,6 @@ graph::~graph()
 }
 
 
-bool graph::openFile(const std::string fName)
-{
-	bool res = true;
-	this->file->open(fName.c_str(), ifstream::in);
-	if (!file->is_open())
-	{
-		res = true;
-	}
-	
-	return res;
-}
-
 bool graph::closeFiles()
 {
 	bool res = false;
@@ -45,15 +33,19 @@ void graph::bfs()
 }
 
 
-void graph::readProblem()
+bool graph::readProblems(const std::string fName)
 {
-	*file >> this->n >> this->m;
+	bool res = false;
+	
+	/*file >> this->n >> this->m;
 	for(int i=0; i<n; i++){
 		for(int j=0; j<m; j++){
 			*file >> problem[i][j];
 		}
 	}
-	*file >> this->xStart >> this->yStart >> this->xGoal >> this->yGoal >> this->dirStart;
+	*file >> this->xStart >> this->yStart >> this->xGoal >> this->yGoal >> this->dirStart;*/
+
+	return res;
 }		
 
 
