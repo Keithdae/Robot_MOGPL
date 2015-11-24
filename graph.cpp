@@ -72,9 +72,7 @@ bool graph::readProblems(const std::string fName)
 				if(dir == "nord"){p.dirStart = 0;}
 				else if(dir == "est"){p.dirStart = 1;}
 				else if(dir == "sud"){p.dirStart = 2;}
-				else{p.dirStart = 3;}
-				
-				cout << sizeof(p.grid) / sizeof(p.grid[0][0]) << endl;				
+				else{p.dirStart = 3;}			
 
 				problems.push_back(p);
 			}
