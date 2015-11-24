@@ -13,14 +13,18 @@
 
 class node // Pour representer les successeurs
 {
-	int x;
-	int y;
-	int dir;
-	/* Nord  => 0
-	*  Est   => 1
-	*  Sud   => 2
-	*  Ouest => 3
-	*/
+	public:
+		int x;
+		int y;
+		int dir;
+		/* Nord  => 0
+		*  Est   => 1
+		*  Sud   => 2
+		*  Ouest => 3
+		*/
+		std::vector<node *> voisins;
+
+		node(int, int, int);
 };
 
 
@@ -43,6 +47,8 @@ class problem
 		int m; // Nombre de colonnes du probleme
 
 		std::vector< std::vector<bool> > grid;  // true => obstacle ; false => libre
+
+		void afficher_grille();
 };
 
 
@@ -50,23 +56,25 @@ class graph
 {
 	public:
 		graph();
+
 		virtual ~graph();
 		
 		void solveAllProblems();
 
 		bool readProblems(const std::string fName); // Lit l'ensemble des problemes dans le fichier d'entree et le stocke dans le vecteur problems
 
+		std::vector<problem> getProblems();
 		
 	private:
 		std::string fileNameOutput;
-		void createGraph(); // Parcourt le probleme pour creer le graphe (sommet et liste d'adjacence pour les aretes)
+
+		void createGraph(const problem); // Parcourt le probleme pour creer le graphe (sommet et liste d'adjacence pour les aretes)
 
 		std::vector<problem> problems;
 		
 		std::vector<node> grid[4];
 
 		void bfs();
-
 		
 		void writeSolution(); // Ecrit la solution dans le fichier resultat
 };
