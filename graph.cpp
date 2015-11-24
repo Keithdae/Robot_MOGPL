@@ -7,6 +7,11 @@ graph::graph()
 
 }
 
+graph::graph(const string fName)
+{
+	this->file->open(fName.c_str(), ifstream::in);
+}
+
 graph::~graph()
 {
 
@@ -30,6 +35,11 @@ bool graph::closeFiles()
 	bool res = false;
 	
 	return res;
+}
+
+bool graph::isFileOpen()
+{
+	return true;
 }
 
 

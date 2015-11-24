@@ -35,11 +35,13 @@ class graph
 {
 	public:
 		graph();
+		graph(const std::string fName);
 		virtual ~graph();
 		
 
 		bool openFile(const std::string fName);
 		bool closeFiles();
+		bool isFileOpen();
 
 		void readProblem(); // Lit un probleme dans le fichier d'entree et renseigne n m problem xStart yStart xGoal yGoal dirStart
 
