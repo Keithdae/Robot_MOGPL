@@ -52,14 +52,18 @@ bool graph::readProblems(const std::string fName)
 			else // Il reste au moins un probleme a lire
 			{
 				problem p;
+				int temp;
 				p.n = n;
 				p.m = m;
 				for(int i=0; i<n; i++)
 				{
+					vector<bool> row;
 					for(int j=0; j<m; j++)
 					{
-						file >> p.grid[i][j];
+						file >> temp;
+						row.push_back((temp == 1));
 					}
+					p.grid.push_back(row);
 				}
 
 				string dir = "";
@@ -70,6 +74,8 @@ bool graph::readProblems(const std::string fName)
 				else if(dir == "sud"){p.dirStart = 2;}
 				else{p.dirStart = 3;}
 				
+				cout << sizeof(p.grid) / sizeof(p.grid[0][0]) << endl;				
+
 				problems.push_back(p);
 			}
 		}

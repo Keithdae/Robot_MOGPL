@@ -10,11 +10,6 @@
 #include <unistd.h>
 
 
-// Definit la taille maximale de la matrice des obstacles d'un probleme
-#define MAX_ROWS 50
-#define MAX_COLS 50
-
-
 
 class node // Pour representer les successeurs
 {
@@ -47,7 +42,7 @@ class problem
 		int n; // Nombre de lignes du probleme
 		int m; // Nombre de colonnes du probleme
 
-		bool grid[MAX_ROWS][MAX_COLS];  // true => obstacle ; false => libre
+		std::vector< std::vector<bool> > grid;  // true => obstacle ; false => libre
 };
 
 
