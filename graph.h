@@ -1,13 +1,12 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-
 #include <stdio.h>
 #include <stdlib.h>
+#include <fstream>
 #include <iostream>
 #include <vector>
-#include <string.h>
-#include <fstream>
+#include <string>
 #include <unistd.h>
 
 
