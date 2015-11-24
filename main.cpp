@@ -17,12 +17,7 @@ int main(int argc, char* argv[])
 		}
 		else if(solver.readProblems(prompt))
 		{
-			bool end = false;
-			while(!end)
-			{
-				end = true;
-			}
-			solver.closeFiles();
+			solver.solveAllProblems();
 		}
 		else
 		{

@@ -58,8 +58,7 @@ class graph
 		graph();
 		virtual ~graph();
 		
-
-		bool closeFiles();
+		void solveAllProblems();
 
 		bool readProblems(const std::string fName); // Lit l'ensemble des problemes dans le fichier d'entree et le stocke dans le vecteur problems
 

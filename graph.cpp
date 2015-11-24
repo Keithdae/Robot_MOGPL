@@ -13,13 +13,6 @@ graph::~graph()
 }
 
 
-bool graph::closeFiles()
-{
-	bool res = false;
-	
-	return res;
-}
-
 
 void graph::createGraph()
 {
@@ -28,6 +21,12 @@ void graph::createGraph()
 
 
 void graph::bfs()
+{
+
+}
+
+
+void graph::solveAllProblems()
 {
 
 }
