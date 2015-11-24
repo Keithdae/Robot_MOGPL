@@ -7,39 +7,9 @@ graph::graph()
 
 }
 
-graph::graph(const string fName)
-{
-	this->file->open(fName.c_str(), ifstream::in);
-}
-
 graph::~graph()
 {
 
-}
-
-
-bool graph::openFile(const std::string fName)
-{
-	bool res = true;
-	this->file->open(fName.c_str(), ifstream::in);
-	if (!file->is_open())
-	{
-		res = true;
-	}
-	
-	return res;
-}
-
-bool graph::closeFiles()
-{
-	bool res = false;
-	
-	return res;
-}
-
-bool graph::isFileOpen()
-{
-	return true;
 }
 
 
@@ -55,15 +25,62 @@ void graph::bfs()
 }
 
 
-void graph::readProblem()
+void graph::solveAllProblems()
 {
-	*file >> this->n >> this->m;
-	for(int i=0; i<n; i++){
-		for(int j=0; j<m; j++){
-			*file >> problem[i][j];
+
+}
+
+
+bool graph::readProblems(const std::string fName)
+{
+	bool res = false;
+	
+	ifstream file(fName, ios::in);
+	
+	if(file) // Test l'ouverture du fichier
+	{
+		int n = -1;
+		int m = -1;
+		while(!res)
+		{
+			file >> n >> m;
+			if((n == 0) && (m == 0)) // On a atteint la fin du fichier
+			{
+				fileNameOutput = fName;
+				fileNameOutput.append("Results");
+				res = true;	
+			}
+			else // Il reste au moins un probleme a lire
+			{
+				problem p;
+				int temp;
+				p.n = n;
+				p.m = m;
+				for(int i=0; i<n; i++)
+				{
+					vector<bool> row;
+					for(int j=0; j<m; j++)
+					{
+						file >> temp;
+						row.push_back((temp == 1));
+					}
+					p.grid.push_back(row);
+				}
+
+				string dir = "";
+				file >> p.xStart >> p.yStart >> p.xGoal >> p.yGoal >> dir;
+
+				if(dir == "nord"){p.dirStart = 0;}
+				else if(dir == "est"){p.dirStart = 1;}
+				else if(dir == "sud"){p.dirStart = 2;}
+				else{p.dirStart = 3;}			
+
+				problems.push_back(p);
+			}
 		}
 	}
-	*file >> this->xStart >> this->yStart >> this->xGoal >> this->yGoal >> this->dirStart;
+
+	return res;
 }		
 
 
