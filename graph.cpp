@@ -13,7 +13,6 @@ graph::~graph()
 }
 
 
-
 void graph::createGraph()
 {
 
@@ -47,6 +46,8 @@ bool graph::readProblems(const std::string fName)
 			file >> n >> m;
 			if((n == 0) && (m == 0)) // On a atteint la fin du fichier
 			{
+				fileNameOutput = fName;
+				fileNameOutput.append("Results");
 				res = true;	
 			}
 			else // Il reste au moins un probleme a lire

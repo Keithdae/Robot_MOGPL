@@ -58,6 +58,7 @@ class graph
 
 		
 	private:
+		std::string fileNameOutput;
 		void createGraph(); // Parcourt le probleme pour creer le graphe (sommet et liste d'adjacence pour les aretes)
 
 		std::vector<problem> problems;
