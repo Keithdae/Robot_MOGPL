@@ -147,6 +147,119 @@ vector< vector< vector<node> > > graph::createGraph(const problem p)
 			}
 		}
 	}
+
+	//suppression des aretes en contact/passant par un ostacle
+	for(int i=0;i<p.n;i++)
+	{
+		for(int j=0;j<p.m;j++)
+		{
+			if(p.grid[i][j])//il y a un obstacle a (i,j)
+			{
+				cout << "(" << i << "," << j << ")" << endl;
+				//les 4 coins adjacents a l'obstacle
+				for(int k=0;k<4;k++)
+				{
+					grille[i][j][k].voisins.clear();
+					grille[i+1][j][k].voisins.clear();
+					grille[i][j+1][k].voisins.clear();
+					grille[i+1][j+1][k].voisins.clear();
+				}
+
+				//suppression des aretes des sommets au dessus de l'obstacle
+				if(i-3>=0)
+				{
+					if(grille[i-3][j][2].voisins.size()==5)
+						grille[i-3][j][2].voisins.erase(grille[i-3][j][2].voisins.end()-1);
+					if(grille[i-3][j+1][2].voisins.size()==5)
+						grille[i-3][j+1][2].voisins.erase(grille[i-3][j+1][2].voisins.end()-1);
+				}
+				if(i-2>=0)
+				{
+					if(grille[i-2][j][2].voisins.size()>=4)
+						grille[i-2][j][2].voisins.erase(grille[i-2][j][2].voisins.begin()+3,grille[i-2][j][2].voisins.end()-1);
+					if(grille[i-2][j+1][2].voisins.size()>=4)
+						grille[i-2][j+1][2].voisins.erase(grille[i-2][j+1][2].voisins.begin()+3,grille[i-2][j+1][2].voisins.end()-1);
+				}
+				if(i-1>=0)
+				{
+					if(grille[i-1][j][2].voisins.size()>=3)
+						grille[i-1][j][2].voisins.erase(grille[i-1][j][2].voisins.begin()+2,grille[i-1][j][2].voisins.end()-1);
+					if(grille[i-1][j+1][2].voisins.size()>=3)
+						grille[i-1][j+1][2].voisins.erase(grille[i-1][j+1][2].voisins.begin()+2,grille[i-1][j+1][2].voisins.end()-1);
+				}
+
+				//suppression des aretes des sommets en desous de l'obstacle
+				if(i+4<=p.n)
+				{
+					if(grille[i+4][j][0].voisins.size()==5)
+						grille[i+4][j][0].voisins.erase(grille[i+4][j][0].voisins.end()-1);
+					if(grille[i+4][j+1][0].voisins.size()==5)
+						grille[i+4][j+1][0].voisins.erase(grille[i+4][j+1][0].voisins.end()-1);
+				}
+				if(i+3<=p.n)
+				{
+					if(grille[i+3][j][0].voisins.size()>=4)
+						grille[i+3][j][0].voisins.erase(grille[i+3][j][0].voisins.begin()+3,grille[i+3][j][0].voisins.end()-1);
+					if(grille[i+3][j+1][0].voisins.size()>=4)
+						grille[i+3][j+1][0].voisins.erase(grille[i+3][j+1][0].voisins.begin()+3,grille[i+3][j+1][0].voisins.end()-1);
+				}
+				if(i+2<=p.n)
+				{
+					if(grille[i+2][j][0].voisins.size()>=3)
+						grille[i+2][j][0].voisins.erase(grille[i+2][j][0].voisins.begin()+2,grille[i+2][j][0].voisins.end()-1);
+					if(grille[i+2][j+1][0].voisins.size()>=3)
+						grille[i+2][j+1][0].voisins.erase(grille[i+2][j+1][0].voisins.begin()+2,grille[i+2][j+1][0].voisins.end()-1);
+				}
+
+				//suppression des aretes des sommets a gauche de l'obstacle
+				if(j-3>=0)
+				{
+					if(grille[i][j-3][1].voisins.size()==5)
+						grille[i][j-3][1].voisins.erase(grille[i][j-3][1].voisins.end()-1);
+					if(grille[i+1][j-3][1].voisins.size()==5)
+						grille[i+1][j-3][1].voisins.erase(grille[i+1][j-3][1].voisins.end()-1);
+				}
+				if(j-2>=0)
+				{
+					if(grille[i][j-2][1].voisins.size()>=4)
+						grille[i][j-2][1].voisins.erase(grille[i][j-2][1].voisins.begin()+3,grille[i][j-2][1].voisins.end()-1);
+					if(grille[i+1][j-2][1].voisins.size()>=4)
+						grille[i+1][j-2][1].voisins.erase(grille[i+1][j-2][1].voisins.begin()+3,grille[i+1][j-2][1].voisins.end()-1);
+				}
+				if(j-1>=0)
+				{
+					if(grille[i][j-1][1].voisins.size()>=3)
+						grille[i][j-1][1].voisins.erase(grille[i][j-1][1].voisins.begin()+2,grille[i][j-1][1].voisins.end()-1);
+					if(grille[i+1][j-1][1].voisins.size()>=3)
+						grille[i+1][j-1][1].voisins.erase(grille[i+1][j-1][1].voisins.begin()+2,grille[i+1][j-1][1].voisins.end()-1);
+				}
+
+				//suppression des aretes des sommets a droite de l'obstacle
+				if(j+4<=p.m)
+				{
+					if(grille[i][j+4][3].voisins.size()==5)
+						grille[i][j+4][3].voisins.erase(grille[i][j+4][3].voisins.end()-1);
+					if(grille[i+1][j+4][3].voisins.size()==5)
+						grille[i+1][j+4][3].voisins.erase(grille[i+1][j+4][3].voisins.end()-1);
+				}
+				if(j+3<=p.m)
+				{
+					if(grille[i][j+3][3].voisins.size()>=4)
+						grille[i][j+3][3].voisins.erase(grille[i][j+3][3].voisins.begin()+3,grille[i][j+3][3].voisins.end()-1);
+					if(grille[i+1][j+3][3].voisins.size()>=4)
+						grille[i+1][j+3][3].voisins.erase(grille[i+1][j+3][3].voisins.begin()+3,grille[i+1][j+3][3].voisins.end()-1);
+				}
+				if(j+2<=p.m)
+				{
+					if(grille[i][j+2][3].voisins.size()>=3)
+						grille[i][j+2][3].voisins.erase(grille[i][j+2][3].voisins.begin()+2,grille[i][j+2][3].voisins.end()-1);
+					if(grille[i+1][j+2][3].voisins.size()>=3)
+						grille[i+1][j+2][3].voisins.erase(grille[i+1][j+2][3].voisins.begin()+2,grille[i+1][j+2][3].voisins.end()-1);
+				}
+			}
+		}
+	}
+
 	return grille;
 }
 
