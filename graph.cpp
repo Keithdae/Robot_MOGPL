@@ -173,7 +173,10 @@ void graph::bfs(const problem p)
 	queue<node *> q;
 	q.push(start);
 
-	while(!q.empty())
+	bool goalReached = false;
+	node bestGoal = *start;
+
+	while(!q.empty() && !goalReached)
 	{
 		node *u = q.front();
 		q.pop();
@@ -185,22 +188,19 @@ void graph::bfs(const problem p)
 				cur->distance = u->distance + 1;
 				cur->parent = u;
 				q.push(cur);
+				if(cur->x == p.xGoal && cur->y == p.yGoal)
+				{
+					goalReached = true;
+					bestGoal = *cur;
+				}
 			}	
 		}
 	}
 
 	cout << "Fin du parcours" << endl;
 	// Debug
-	vector<node> goals = grille[p.xGoal][p.yGoal];
-	node bestGoal = goals[0];
-	for(unsigned int t=1; t<goals.size(); t++)
-	{
-		if(goals[t].distance < bestGoal.distance)
-		{
-			bestGoal = goals[t];
-		}
-	}
 	node par = bestGoal;
+	cout << "la distance du plus court chemin est: " << bestGoal.distance << endl;
 	while(par.parent != NULL) // ATTENTION CHEMIN INDIQUE A L'ENVERS
 	{
 		cout << "x=" << par.x << ", y=" << par.y << ", dir= " << (par.dir == 0?"Nord":(par.dir == 1?"Est":(par.dir == 2?"Sud":"Ouest"))) << endl;
