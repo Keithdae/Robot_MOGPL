@@ -20,7 +20,7 @@ graph::~graph()
 }
 
 
-void graph::createGraph(const problem p)
+vector< vector< vector<node> > > graph::createGraph(const problem p)
 {
 	//creation de le grille avec n+1 lignes, m+1 colonnes et 4 direction pour chaque noeud 
 	vector< vector< vector<node> > > grille;
@@ -46,8 +46,8 @@ void graph::createGraph(const problem p)
 		for(int j=0;j<=p.m;j++)
 		{
 			//noeud au nord
-			grille[i][j][0].voisins.push_back(&grille[i][j][1]);
-			grille[i][j][0].voisins.push_back(&grille[i][j][3]);
+			grille[i][j][0].voisins.push_back(&grille[i][j][1]); // Tourne Droite
+			grille[i][j][0].voisins.push_back(&grille[i][j][3]); // Tourne Gauche
 			if(i-3>=0)
 			{
 				grille[i][j][0].voisins.push_back(&grille[i-1][j][0]);
@@ -71,8 +71,8 @@ void graph::createGraph(const problem p)
 			}
 
 			//noeud a l'est
-			grille[i][j][1].voisins.push_back(&grille[i][j][2]);
-			grille[i][j][1].voisins.push_back(&grille[i][j][0]);
+			grille[i][j][1].voisins.push_back(&grille[i][j][2]); // Tourne Droite
+			grille[i][j][1].voisins.push_back(&grille[i][j][0]); // Tourne Gauche
 			if(j+3<=p.m)
 			{
 				grille[i][j][1].voisins.push_back(&grille[i][j+1][1]);
@@ -96,8 +96,8 @@ void graph::createGraph(const problem p)
 			}
 
 			//noeud au sud
-			grille[i][j][2].voisins.push_back(&grille[i][j][3]);
-			grille[i][j][2].voisins.push_back(&grille[i][j][1]);
+			grille[i][j][2].voisins.push_back(&grille[i][j][3]); // Tourne Droite
+			grille[i][j][2].voisins.push_back(&grille[i][j][1]); // Tourne Gauche
 			if(i+3<=p.n)
 			{
 				grille[i][j][2].voisins.push_back(&grille[i+1][j][2]);
@@ -121,8 +121,8 @@ void graph::createGraph(const problem p)
 			}
 
 			//noeud a l'ouest
-			grille[i][j][3].voisins.push_back(&grille[i][j][0]);
-			grille[i][j][3].voisins.push_back(&grille[i][j][2]);
+			grille[i][j][3].voisins.push_back(&grille[i][j][0]); // Tourne Droite
+			grille[i][j][3].voisins.push_back(&grille[i][j][2]); // Tourne Gauche
 			if(j-3>=0)
 			{
 				grille[i][j][3].voisins.push_back(&grille[i][j-1][3]);
@@ -146,6 +146,7 @@ void graph::createGraph(const problem p)
 			}
 		}
 	}
+	return grille;
 }
 
 

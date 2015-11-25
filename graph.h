@@ -68,11 +68,9 @@ class graph
 	private:
 		std::string fileNameOutput;
 
-		void createGraph(const problem); // Parcourt le probleme pour creer le graphe (sommet et liste d'adjacence pour les aretes)
+		std::vector< std::vector< std::vector<node> > > createGraph(const problem); // Parcourt le probleme pour creer le graphe (sommet et liste d'adjacence pour les aretes)
 
 		std::vector<problem> problems;
-		
-		std::vector<node> grid[4];
 
 		void bfs();
 		
