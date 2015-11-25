@@ -50,25 +50,26 @@ vector< vector< vector<node> > > graph::createGraph(const problem p)
 			grille[i][j][0].voisins.push_back(&grille[i][j][3]); // Tourne Gauche
 			if(i-3>=0)
 			{
-				grille[i][j][0].voisins.push_back(&grille[i-1][j][0]);
-				grille[i][j][0].voisins.push_back(&grille[i-2][j][0]);
-				grille[i][j][0].voisins.push_back(&grille[i-3][j][0]);
+			grille[i][j][0].voisins.push_back(&grille[i-1][j][0]);
+			grille[i][j][0].voisins.push_back(&grille[i-2][j][0]);
+			grille[i][j][0].voisins.push_back(&grille[i-3][j][0]);
 			}
 			else
 			{
 				if(i-2>=0)
 				{
-					grille[i][j][0].voisins.push_back(&grille[i-1][j][0]);
-					grille[i][j][0].voisins.push_back(&grille[i-2][j][0]);
+				grille[i][j][0].voisins.push_back(&grille[i-1][j][0]);
+				grille[i][j][0].voisins.push_back(&grille[i-2][j][0]);
 				}
 				else
 				{
 					if(i-1>=0)
 					{
-						grille[i][j][0].voisins.push_back(&grille[i-1][j][0]);
+					grille[i][j][0].voisins.push_back(&grille[i-1][j][0]);
 					}
 				}
 			}
+
 
 			//noeud a l'est
 			grille[i][j][1].voisins.push_back(&grille[i][j][2]); // Tourne Droite
@@ -150,15 +151,71 @@ vector< vector< vector<node> > > graph::createGraph(const problem p)
 }
 
 
-void graph::bfs()
+void graph::bfs(const problem p)
 {
+	vector< vector< vector<node> > > grille = createGraph(p);
+	for(unsigned int i=0; i<grille.size();i++)
+	{
+		for(unsigned int j=0; j<grille[0].size(); j++)
+		{
+			for(unsigned int k=0; k<grille[0][0].size(); k++)
+			{
+				grille[i][j][k].distance = INF; // Tous les noeuds sont consideres a une distance infinie
+				grille[i][j][k].parent = NULL;  // On ne connait pas le chemin pour les atteindre
+			}
+		}
+	}
+	
+	cout << "Debut du parcours" << endl;
 
+	node *start = &grille[p.xStart][p.yStart][p.dirStart]; // Noeud de depart
+	start->distance = 0;
+	queue<node *> q;
+	q.push(start);
+
+	while(!q.empty())
+	{
+		node *u = q.front();
+		q.pop();
+		for(unsigned int v=0; v<u->voisins.size(); v++)
+		{
+			node *cur = u->voisins[v];
+			if(cur->distance == INF)
+			{
+				cur->distance = u->distance + 1;
+				cur->parent = u;
+				q.push(cur);
+			}	
+		}
+	}
+
+	cout << "Fin du parcours" << endl;
+	// Debug
+	vector<node> goals = grille[p.xGoal][p.yGoal];
+	node bestGoal = goals[0];
+	for(unsigned int t=1; t<goals.size(); t++)
+	{
+		if(goals[t].distance < bestGoal.distance)
+		{
+			bestGoal = goals[t];
+		}
+	}
+	node par = bestGoal;
+	while(par.parent != NULL)
+	{
+		cout << "x=" << par.x << ", y=" << par.y << ", dir= " << (par.dir == 0?"Nord":(par.dir == 1?"Est":(par.dir == 2?"Sud":"Ouest"))) << endl;
+		par = *par.parent;
+	}
+	// /Debug
 }
 
 
 void graph::solveAllProblems()
 {
-
+	for(unsigned int i=0; i<problems.size(); i++)
+	{
+		bfs(problems[i]);
+	}
 }
 
 

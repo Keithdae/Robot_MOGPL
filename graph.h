@@ -6,10 +6,11 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <string>
 #include <unistd.h>
 
-
+#define INF 10000000
 
 class node // Pour representer les successeurs
 {
@@ -23,6 +24,9 @@ class node // Pour representer les successeurs
 		*  Ouest => 3
 		*/
 		std::vector<node *> voisins;
+
+		node *parent;
+		int distance;
 
 		node(int, int, int);
 };
@@ -72,7 +76,7 @@ class graph
 
 		std::vector<problem> problems;
 
-		void bfs();
+		void bfs(const problem);
 		
 		void writeSolution(); // Ecrit la solution dans le fichier resultat
 };
