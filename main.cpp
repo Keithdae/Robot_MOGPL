@@ -18,7 +18,6 @@ int main(int argc, char* argv[])
 		else if(solver.readProblems(prompt))
 		{
 			solver.solveAllProblems();
-			solver.getProblems()[0].afficher_grille();
 		}
 		else
 		{
