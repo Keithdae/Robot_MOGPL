@@ -310,9 +310,11 @@ string graph::bfs(const problem p)
 	}
 
 	if(bestGoal.x == (*start).x && bestGoal.y == (*start).y)
+	{
+		cout << "Pas de chemin trouve!" << endl;
 		return "-1\n";
+	}
 
-	cout << "Fin du parcours" << endl;
 	// Debug
 	vector<node> chemin;
 	node par = bestGoal;
@@ -320,12 +322,12 @@ string graph::bfs(const problem p)
 	cout << "la longueur du plus court chemin est: " << bestGoal.distance << endl;
 	while(par.parent != NULL) // ATTENTION CHEMIN INDIQUE A L'ENVERS
 	{
-		cout << "x=" << par.x << ", y=" << par.y << ", dir= " << (par.dir == 0?"Nord":(par.dir == 1?"Est":(par.dir == 2?"Sud":"Ouest"))) << endl;
 		par = *par.parent;
 		chemin.insert(chemin.begin(),par);
 	}
-	cout << "x=" << par.x << ", y=" << par.y << ", dir= " << (par.dir == 0?"Nord":(par.dir == 1?"Est":(par.dir == 2?"Sud":"Ouest"))) << endl;
-	return writeSolution(bestGoal.distance,chemin);
+	string res = writeSolution(bestGoal.distance,chemin);
+	cout << res;
+	return res;
 	// /Debug
 }
 

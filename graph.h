@@ -71,9 +71,6 @@ class graph
 		// Genere un nombre nbInst de probleme avec N lignes, M colonnes et nbObst obstacles, puis stocke le resultat dans le fichier fName 
 		void generateProblems(const int N, const int M, const int nbInst, const int nbObst, const std::string fName);
 		
-		// Genere un nombre nbInst de probleme avec N lignes, M colonnes et nbObst obstacles, puis stocke le resultat dans le fichier fName 
-		void generateProblems(const int N, const int M, const int nbInst, const int nbObst, const std::string fName);
-		
 	private:
 		std::string fileNameOutput;
 
