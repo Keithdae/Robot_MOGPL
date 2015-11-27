@@ -69,6 +69,9 @@ class graph
 
 		std::vector<problem> getProblems();
 		
+		// Genere un nombre nbInst de probleme avec N lignes, M colonnes et nbObst obstacles, puis stocke le resultat dans le fichier fName 
+		void generateProblems(const int N, const int M, const int nbInst, const int nbObst, const std::string fName);
+		
 	private:
 		std::string fileNameOutput;
 
@@ -76,9 +79,10 @@ class graph
 
 		std::vector<problem> problems;
 
-		void bfs(const problem);
+		std::string bfs(const problem);
 		
-		void writeSolution(); // Ecrit la solution dans le fichier resultat
+		std::string writeSolution(const int longueur, const std::vector<node>); // Ecrit la solution dans le fichier resultat
+  
 };
 
 

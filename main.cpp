@@ -2,6 +2,7 @@
 
 int main(int argc, char* argv[])
 {
+	srand(time(NULL));
 	bool done = false;
 	std::string prompt = "";
 

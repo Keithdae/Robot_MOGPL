@@ -263,7 +263,7 @@ vector< vector< vector<node> > > graph::createGraph(const problem p)
 }
 
 
-void graph::bfs(const problem p)
+string graph::bfs(const problem p)
 {
 	vector< vector< vector<node> > > grille = createGraph(p);
 	for(unsigned int i=0; i<grille.size();i++)
@@ -309,6 +309,9 @@ void graph::bfs(const problem p)
 		}
 	}
 
+	if(bestGoal.x == (*start).x && bestGoal.y == (*start).y)
+		return "-1\n";
+
 	cout << "Fin du parcours" << endl;
 	// Debug
 	vector<node> chemin;
@@ -321,16 +324,24 @@ void graph::bfs(const problem p)
 		par = *par.parent;
 		chemin.insert(chemin.begin(),par);
 	}
+	cout << "x=" << par.x << ", y=" << par.y << ", dir= " << (par.dir == 0?"Nord":(par.dir == 1?"Est":(par.dir == 2?"Sud":"Ouest"))) << endl;
+	return writeSolution(bestGoal.distance,chemin);
 	// /Debug
 }
 
 
 void graph::solveAllProblems()
 {
-	for(unsigned int i=0; i<problems.size(); i++)
+	ofstream out(this->fileNameOutput);
+	if(out.is_open())
 	{
-		bfs(problems[i]);
+		for(unsigned int i=0; i<problems.size(); i++)
+		{
+			string solution = bfs(problems[i]);
+			out << solution;
+		}
 	}
+	out.close();
 }
 
 
@@ -387,9 +398,23 @@ bool graph::readProblems(const std::string fName)
 	return res;
 }		
 
-void graph::writeSolution()
+string graph::writeSolution(const int longueur, const vector<node> chemin)
 {
-
+	string solution = to_string(longueur);
+	for(size_t i=0;i<chemin.size()-1;i++)
+	{
+		if(chemin[i].x == chemin[i+1].x && chemin[i].y == chemin[i+1].y && chemin[i+1].dir == ((chemin[i].dir + 1) % 4))
+			solution += " D"; 
+		else if(chemin[i].x == chemin[i+1].x && chemin[i].y == chemin[i+1].y && chemin[i+1].dir == ((chemin[i].dir - 1) % 4))
+				solution += " G"; 
+		else if(abs(chemin[i].x - chemin[i+1].x) == 1  || abs(chemin[i].y - chemin[i+1].y) == 1)
+				solution += " a1"; 
+		else if(abs(chemin[i].x - chemin[i+1].x) == 2  || abs(chemin[i].y - chemin[i+1].y) == 2)
+				solution += " a2"; 
+		else if(abs(chemin[i].x - chemin[i+1].x) == 3  || abs(chemin[i].y - chemin[i+1].y) == 3)
+				solution += " a3"; 
+	}
+	return solution + "\n";
 }
 
 vector<problem> graph::getProblems()
@@ -407,6 +432,11 @@ void problem::afficher_grille()
 		}
 		cout << endl;
 	}
+}
+
+
+void graph::generateProblems(const int N, const int M, const int nbInst, const int nbObst, const std::string fName)
+{
 }
 
 
