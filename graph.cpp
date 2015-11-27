@@ -484,9 +484,9 @@ void graph::generateProblems(const int N, const int M, const int nbInst, const i
 		int yStart = 0;
 		while(!done)  // On genere des coordonnees de depart en verifiant que l'on ne tombe pas sur un obstacle
 		{
-			int xStart = rand()%N;
-			int yStart = rand()%M;
-			if(!grid[xStart][yStart])
+			int xStart = rand()%(N+1);
+			int yStart = rand()%(M+1);
+			if( (!grid[xStart][yStart]) && (!grid[xStart - (xStart>0?1:0)][yStart]) && (!grid[xStart][yStart - (yStart>0?1:0)]) && (!grid[xStart - (xStart>0?1:0)][yStart - (yStart>0?1:0)]) )
 			{
 				pbFile << xStart << " " << yStart << " ";
 				done = true;
@@ -495,11 +495,11 @@ void graph::generateProblems(const int N, const int M, const int nbInst, const i
 		done = false;
 		while(!done)  // On genere les coordonnees d'arrivee en verifiant que l'on tombe ni sur un obstacle ni sur le point de depart
 		{
-			int xGoal = rand()%N;
-			int yGoal = rand()%M;
+			int xGoal = rand()%(N+1);
+			int yGoal = rand()%(M+1);
 			if( (xGoal != xStart) || (yGoal != yStart) )
 			{
-				if(!grid[xGoal][yGoal])
+				if( (!grid[xGoal][yGoal]) && (!grid[xGoal - (xGoal>0?1:0)][yGoal]) && (!grid[xGoal][yGoal - (yGoal>0?1:0)]) && (!grid[xGoal - (xGoal>0?1:0)][yGoal - (yGoal>0?1:0)]) )
 				{
 					pbFile << xGoal << " " << yGoal << " ";
 					done = true;
