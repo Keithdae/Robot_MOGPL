@@ -8,6 +8,8 @@ int main(int argc, char* argv[])
 
 	graph solver = graph();
 
+	solver.generateProblems(10, 10, 5, 10, "testGen");
+
 	while(!done)
 	{
 		std::cout << "Veuillez entrer un nom de fichier, ou <q> pour quitter le programme : " << std::endl;
