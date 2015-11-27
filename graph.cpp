@@ -410,13 +410,15 @@ void problem::afficher_grille()
 
 void graph::generateProblems(const int N, const int M, const int nbInst, const int nbObst, const std::string fName)
 {
-	vector< vector<bool> > grid(N, vector<bool>(M));
+	vector< vector<bool> > grid(N, vector<bool>(M));  // Represente la grille d'obstacle avec true pour indiquer la presence d'un obstacle
 	
 	ofstream pbFile;
-	pbFile.open(fName.c_str(), ios::out | ios::trunc );
+	pbFile.open(fName.c_str(), ios::out | ios::trunc );  // Ouverture du fichier en ecriture, si il existe deja il est ecrase
+
 
 	for(int inst=0; inst<nbInst; inst++)
 	{
+		// Reinitialisation de la grille
 		for(int i=0; i<N; i++)
 		{
 			for(int j=0; j<M; j++)
@@ -424,19 +426,20 @@ void graph::generateProblems(const int N, const int M, const int nbInst, const i
 				grid[i][j] = false;
 			}
 		}
-	
-		int setObst = 0;
+		
+		int setObst = 0;  // Nombre d'obstacles en place dans la grille
 		while(setObst < nbObst)
 		{
 			int x = rand()%N;
 			int y = rand()%M;
-			if(!grid[x][y])
+			if(!grid[x][y])  // On verifie qu'il n'y a pas deja un obstacle
 			{
 				grid[x][y] = true;
 				setObst++;
 			}
 		}
 		
+		// Une fois la grille remplie avec le bon nombre d'obstacle, on ecrit le probleme dans le fichier en respectant le format demande
 		pbFile << N << " " << M << endl;
 		for(int i=0; i<N; i++)
 		{
@@ -450,7 +453,7 @@ void graph::generateProblems(const int N, const int M, const int nbInst, const i
 		bool done = false;
 		int xStart = 0;
 		int yStart = 0;
-		while(!done)
+		while(!done)  // On genere des coordonnees de depart en verifiant que l'on ne tombe pas sur un obstacle
 		{
 			int xStart = rand()%N;
 			int yStart = rand()%M;
@@ -461,7 +464,7 @@ void graph::generateProblems(const int N, const int M, const int nbInst, const i
 			}
 		}
 		done = false;
-		while(!done)
+		while(!done)  // On genere les coordonnees d'arrivee en verifiant que l'on tombe ni sur un obstacle ni sur le point de depart
 		{
 			int xGoal = rand()%N;
 			int yGoal = rand()%M;
@@ -474,9 +477,11 @@ void graph::generateProblems(const int N, const int M, const int nbInst, const i
 				}
 			}
 		}
-		int dir = rand()%4;
+		int dir = rand()%4;  // On genere la direction
 		pbFile << (dir == 0?"nord":(dir == 1?"est":(dir == 2?"sud":"ouest"))) << endl;
 	}	
+
+	// Une fois les problemes generes, on insere 0 0 pour indiquer la fin du fichier puis on le ferme
 	pbFile << 0 << " " << 0;
 	pbFile.close();
 }
