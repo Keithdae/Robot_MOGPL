@@ -54,8 +54,6 @@ class problem
 
 		void afficher_grille();
 
-		// Genere un nombre nbInst de probleme avec N lignes, M colonnes et nbObst obstacles, puis stocke le resultat dans le fichier fName 
-		void generateProblems(const int N, const int M, const int nbInst, const int nbObst, const std::string fName);
 };
 
 
@@ -71,6 +69,9 @@ class graph
 		bool readProblems(const std::string fName); // Lit l'ensemble des problemes dans le fichier d'entree et le stocke dans le vecteur problems
 
 		std::vector<problem> getProblems();
+
+		// Genere un nombre nbInst de probleme avec N lignes, M colonnes et nbObst obstacles, puis stocke le resultat dans le fichier fName 
+		void generateProblems(const int N, const int M, const int nbInst, const int nbObst, const std::string fName);
 		
 	private:
 		std::string fileNameOutput;

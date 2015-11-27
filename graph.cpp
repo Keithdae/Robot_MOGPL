@@ -410,9 +410,75 @@ void problem::afficher_grille()
 
 void graph::generateProblems(const int N, const int M, const int nbInst, const int nbObst, const std::string fName)
 {
-	bool grid[N][M] = { {false} };
-			
+	vector< vector<bool> > grid(N, vector<bool>(M));
 	
+	ofstream pbFile;
+	pbFile.open(fName.c_str(), ios::out | ios::trunc );
+
+	for(int inst=0; inst<nbInst; inst++)
+	{
+		for(int i=0; i<N; i++)
+		{
+			for(int j=0; j<M; j++)
+			{
+				grid[i][j] = false;
+			}
+		}
+	
+		int setObst = 0;
+		while(setObst < nbObst)
+		{
+			int x = rand()%N;
+			int y = rand()%M;
+			if(!grid[x][y])
+			{
+				grid[x][y] = true;
+				setObst++;
+			}
+		}
+		
+		pbFile << N << " " << M << endl;
+		for(int i=0; i<N; i++)
+		{
+			for(int j=0; j<M; j++)
+			{
+				pbFile << grid[i][j] << " ";
+			}
+			pbFile << endl;
+		}
+		
+		bool done = false;
+		int xStart = 0;
+		int yStart = 0;
+		while(!done)
+		{
+			int xStart = rand()%N;
+			int yStart = rand()%M;
+			if(!grid[xStart][yStart])
+			{
+				pbFile << xStart << " " << yStart << " ";
+				done = true;
+			}
+		}
+		done = false;
+		while(!done)
+		{
+			int xGoal = rand()%N;
+			int yGoal = rand()%M;
+			if( (xGoal != xStart) || (yGoal != yStart) )
+			{
+				if(!grid[xGoal][yGoal])
+				{
+					pbFile << xGoal << " " << yGoal << " ";
+					done = true;
+				}
+			}
+		}
+		int dir = rand()%4;
+		pbFile << (dir == 0?"nord":(dir == 1?"est":(dir == 2?"sud":"ouest"))) << endl;
+	}	
+	pbFile << 0 << " " << 0;
+	pbFile.close();
 }
 
 
