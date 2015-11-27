@@ -439,7 +439,7 @@ void problem::afficher_grille()
 
 void graph::generateProblems(const int N, const int M, const int nbInst, const int nbObst, const std::string fName)
 {
-	vector< vector<bool> > grid(N, vector<bool>(M));  // Represente la grille d'obstacle avec true pour indiquer la presence d'un obstacle
+	vector< vector<bool> > grid(N + 1, vector<bool>(M + 1));  // Represente la grille d'obstacle avec true pour indiquer la presence d'un obstacle
 	
 	ofstream pbFile;
 	pbFile.open(fName.c_str(), ios::out | ios::trunc );  // Ouverture du fichier en ecriture, si il existe deja il est ecrase

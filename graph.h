@@ -14,7 +14,7 @@
 
 class node // Pour representer les successeurs
 {
-	public:
+	public: 
 		int x;
 		int y;
 		int dir;
@@ -23,10 +23,15 @@ class node // Pour representer les successeurs
 		*  Sud   => 2
 		*  Ouest => 3
 		*/
-		std::vector<node *> voisins;
+
+		int distance;
 
 		node *parent;
-		int distance;
+		
+		std::vector<node *> voisins;
+
+		
+		
 
 		node(int, int, int);
 };
