@@ -53,6 +53,9 @@ class problem
 		std::vector< std::vector<bool> > grid;  // true => obstacle ; false => libre
 
 		void afficher_grille();
+
+		// Genere un nombre nbInst de probleme avec N lignes, M colonnes et nbObst obstacles, puis stocke le resultat dans le fichier fName 
+		void generateProblems(const int N, const int M, const int nbInst, const int nbObst, const std::string fName);
 };
 
 
@@ -79,6 +82,7 @@ class graph
 		void bfs(const problem);
 		
 		void writeSolution(); // Ecrit la solution dans le fichier resultat
+  
 };
 
 

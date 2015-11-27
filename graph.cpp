@@ -312,12 +312,13 @@ void graph::bfs(const problem p)
 	cout << "Fin du parcours" << endl;
 	// Debug
 	node par = bestGoal;
-	cout << "la distance du plus court chemin est: " << bestGoal.distance << endl;
+	cout << "la longueur du plus court chemin est: " << bestGoal.distance << endl;
 	while(par.parent != NULL) // ATTENTION CHEMIN INDIQUE A L'ENVERS
 	{
 		cout << "x=" << par.x << ", y=" << par.y << ", dir= " << (par.dir == 0?"Nord":(par.dir == 1?"Est":(par.dir == 2?"Sud":"Ouest"))) << endl;
 		par = *par.parent;
 	}
+	cout << "x=" << par.x << ", y=" << par.y << ", dir= " << (par.dir == 0?"Nord":(par.dir == 1?"Est":(par.dir == 2?"Sud":"Ouest"))) << endl;
 	// /Debug
 }
 
@@ -404,6 +405,14 @@ void problem::afficher_grille()
 		}
 		cout << endl;
 	}
+}
+
+
+void graph::generateProblems(const int N, const int M, const int nbInst, const int nbObst, const std::string fName)
+{
+	bool grid[N][M] = { {false} };
+			
+	
 }
 
 
