@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 
 	graph solver = graph();
 
-	solver.generateProblems(50, 50, 10, 50, "testGen");
+	solver.generateProblems(50, 50, 10, 300, "testGen");
 	
 	while(!done)
 	{
