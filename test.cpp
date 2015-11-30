@@ -1,5 +1,6 @@
 /* COMPILE USING:  g++ -Wall -pedantic -g -std=c++11 test.cpp graph.cpp `pkg-config --cflags --libs gtk+-3.0` -o fen*/
 #include <gtk/gtk.h>
+#include <sstream>
 #include "graph.h"
 
 using namespace std;
@@ -25,6 +26,7 @@ typedef struct {
 
    int n; // Nombre de lignes du probleme
    int m; // Nombre de colonnes du probleme 
+   string chaine_res;
 
    std::vector< std::vector<bool> > grid;  // true => obstacle ; false => libre
 } struct_problem ;
@@ -44,7 +46,7 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
    /* set the line width */
    cairo_set_line_width(cr,1);
 
-   /*drawing the lines of the grid*/
+   /*drawing the lines of the grid (columns)*/
    for(int i=0;i<=p->m;i++)
    {
       cairo_move_to(cr, 2+i*case_width,2);
@@ -52,6 +54,7 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
       cairo_stroke(cr);   
    }
 
+   /*drawing the lines of the grid (rows)*/
    for(int i=0;i<=p->n;i++)
    {
       cairo_move_to(cr, 2,2+i*case_width);
@@ -83,8 +86,10 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
    cairo_set_line_width(cr,2);
    cairo_arc(cr, 2+p->yStart*case_width, 2+p->xStart*case_width, 0.25*case_width, 0, 2*G_PI);
    cairo_fill(cr);
+   /* draw goal circle */
    cairo_arc(cr, 2+p->yGoal*case_width, 2+p->xGoal*case_width, 0.25*case_width, 0, 2*G_PI);
    cairo_fill(cr);
+   /* draw start direction arrow */
    switch(p->dirStart)
    {
     case 0:
@@ -119,6 +124,95 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
         cairo_fill(cr);  
    }
 
+   /* draw path */
+   istringstream iss( p->chaine_res ); 
+   char* mot = getline( iss, mot, ' ' );
+   int x = p->xStart, x1;
+   int y = p->yStart, y1;
+   int dir = p->dirStart;
+   cairo_set_source_rgb(cr, 0., 0., 0.);
+   cairo_set_line_width(cr,4);
+    while ( getline( iss, mot, ' ' ) ) 
+    { 
+        if(mot == "D")
+        {
+            dir = (dir + 1) % 4;
+        }
+        else if (mot == "G")
+        {
+            dir = (dir - 1) % 4;
+        }
+        else if(mot == "a1")
+        {
+            if(dir == 0)
+            {
+                x1 = x - 1; y1 = y;
+            }
+            else if (dir == 1)
+            {
+                x1 = x; y1 = y + 1;
+            }
+            else if (dir == 2)
+            {
+                x1 = x + 1; y1 = y;
+            }
+            else if (dir == 3)
+            {
+                x1 = x; y1 = y - 1;
+            }
+            cairo_move_to(cr, 2+y*case_width,2+x*case_width);
+            cairo_line_to(cr, 2+y1*case_width,2+x1*case_width);
+            cairo_stroke(cr);
+            x = x1; y = y1;
+        }
+        else if(mot == "a2")
+        {
+            if(dir == 0)
+            {
+                x1 = x - 2; y1 = y;
+            }
+            else if (dir == 1)
+            {
+                x1 = x; y1 = y + 2;
+            }
+            else if (dir == 2)
+            {
+                x1 = x + 2; y1 = y;
+            }
+            else if (dir == 3)
+            {
+                x1 = x; y1 = y - 2;
+            }
+            cairo_move_to(cr, 2+y*case_width,2+x*case_width);
+            cairo_line_to(cr, 2+y1*case_width,2+x1*case_width);
+            cairo_stroke(cr);
+            x = x1; y = y1;
+        }
+        else if (mot == "a3")
+        {
+            if(dir == 0)
+            {
+                x1 = x - 3; y1 = y;
+            }
+            else if (dir == 1)
+            {
+                x1 = x; y1 = y + 3;
+            }
+            else if (dir == 2)
+            {
+                x1 = x + 3; y1 = y;
+            }
+            else if (dir == 3)
+            {
+                x1 = x; y1 = y - 3;
+            }
+            cairo_move_to(cr, 2+y*case_width,2+x*case_width);
+            cairo_line_to(cr, 2+y1*case_width,2+x1*case_width);
+            cairo_stroke(cr);
+            x = x1; y = y1;
+        }
+    } 
+
    return FALSE;
 }
 
@@ -131,7 +225,7 @@ static gboolean clicked(GtkWidget *widget, gpointer data)
 int main (int argc, char *argv[])
 {
    graph solver = graph();
-   solver.readProblems("testGen");
+   solver.readProblems("test");
    struct_problem sp;
    sp.xStart = solver.getProblems()[0].xStart;
    sp.yStart = solver.getProblems()[0].yStart;
@@ -140,6 +234,7 @@ int main (int argc, char *argv[])
    sp.dirStart = solver.getProblems()[0].dirStart;
    sp.n = solver.getProblems()[0].n; 
    sp.m = solver.getProblems()[0].m; 
+   sp.chaine_res = "12 D a1 D a3 a3 D a1 a3 D a1 G a2";
    sp.grid = solver.getProblems()[0].grid; 
 
    gtk_init (&argc, &argv);
@@ -163,6 +258,7 @@ int main (int argc, char *argv[])
    gtk_fixed_put(GTK_FIXED(container), da, 30, 30);
    gtk_fixed_put(GTK_FIXED(container), button, 600, 50);
    gtk_widget_show(container);
+   gtk_widget_show(da);
    gtk_widget_show(button);
    gtk_widget_show (window);
 
