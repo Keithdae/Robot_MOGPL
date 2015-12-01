@@ -12,4 +12,4 @@ Lancez le programme avec la commande "./robot", sans ajouter de paramètres (ils
 
 Pour nettoyer le dossier en supprimant les binaires (.o), utilisez la commande "make clean"
 
-Pour supprimer à la fois les binaires et l'exécutable, il est possible d'utiliser la commande <make mrproper>
+Pour supprimer à la fois les binaires et l'exécutable, il est possible d'utiliser la commande "make mrproper"
