@@ -150,7 +150,7 @@ draw_cb (GtkWidget * widget, cairo_t * cr, gpointer data)
     {
       string mot;
       res >> mot;
-      if (mot != "-1")
+      if (mot.compare("-1") != 0)
 	{
 	  int x = p->xStart, x1;
 	  int y = p->yStart, y1;

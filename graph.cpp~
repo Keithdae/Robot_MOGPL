@@ -433,7 +433,7 @@ string graph::writeSolution(const int longueur, const vector<node> chemin)
 	{
 		if(chemin[i].x == chemin[i+1].x && chemin[i].y == chemin[i+1].y && chemin[i+1].dir == ((chemin[i].dir + 1) % 4))
 			solution += " D"; 
-		else if(chemin[i].x == chemin[i+1].x && chemin[i].y == chemin[i+1].y && chemin[i+1].dir ==((4+((chemin[i].dir - 1) % 4))%4))
+		else if(chemin[i].x == chemin[i+1].x && chemin[i].y == chemin[i+1].y && chemin[i+1].dir == ((chemin[i].dir - 1) % 4))
 				solution += " G"; 
 		else if(abs(chemin[i].x - chemin[i+1].x) == 1  || abs(chemin[i].y - chemin[i+1].y) == 1)
 				solution += " a1"; 
