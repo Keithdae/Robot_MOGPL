@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 			std::cout << "Veuillez entrer le nombre d'obstacles souhaités : " << std::endl;
 			std::cin >> nObstacles;
 			std::cout << "Veuillez entrer le nom du fichier où les problèmes seront sauvegardés : " << std::endl;
-			std::cin.ignore();
+			cin.ignore();
 			getline(std::cin, prompt);
 			solver.generateProblems(nLignes, nColonnes, nInstances, nObstacles, prompt);
 		}

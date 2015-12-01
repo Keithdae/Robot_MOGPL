@@ -224,7 +224,7 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 
 void solution_window(){
     graph solver = graph();
-    solver.readProblems("test");
+    solver.readProblems("testGen");
     sp.xStart = solver.getProblems()[0].xStart;
     sp.yStart = solver.getProblems()[0].yStart;
     sp.xGoal = solver.getProblems()[0].xGoal;
@@ -232,7 +232,7 @@ void solution_window(){
     sp.dirStart = solver.getProblems()[0].dirStart;
     sp.n = solver.getProblems()[0].n; 
     sp.m = solver.getProblems()[0].m; 
-    sp.chaine_res = "testResults";
+    sp.chaine_res = "testGenResults";
     sp.grid = solver.getProblems()[0].grid; 
 
     GtkWidget *window;

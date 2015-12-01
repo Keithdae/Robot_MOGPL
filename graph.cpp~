@@ -367,8 +367,6 @@ void graph::solveAllProblems()
 	
 	out << averageTime;
 	
-	problems.clear();
-	
 	out.close();
 }
 
