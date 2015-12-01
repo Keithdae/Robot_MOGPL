@@ -230,7 +230,7 @@ static gboolean clicked(GtkWidget *widget, gpointer data)
 int main (int argc, char *argv[])
 {
    graph solver = graph();
-   solver.readProblems("testGen");
+   solver.readProblems("test");
    struct_problem sp;
    sp.xStart = solver.getProblems()[0].xStart;
    sp.yStart = solver.getProblems()[0].yStart;
@@ -239,7 +239,7 @@ int main (int argc, char *argv[])
    sp.dirStart = solver.getProblems()[0].dirStart;
    sp.n = solver.getProblems()[0].n; 
    sp.m = solver.getProblems()[0].m; 
-   sp.chaine_res = "testGenResults";
+   sp.chaine_res = "testResults";
    sp.grid = solver.getProblems()[0].grid; 
 
    gtk_init (&argc, &argv);

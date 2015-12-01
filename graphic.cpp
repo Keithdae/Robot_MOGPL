@@ -233,25 +233,27 @@ void solution_window(){
     sp.m = solver.getProblems()[0].m; 
     sp.chaine_res = "testResults";
     sp.grid = solver.getProblems()[0].grid; 
+
     GtkWidget *window;
     GtkWidget *da, *container;
+
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), "La balade du Robot...");
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
     g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
     container = gtk_fixed_new();
-   gtk_container_add(GTK_CONTAINER(window), container);
-   gtk_widget_set_size_request (container, WINDOW_WIDTH, WINDOW_HEIGHT);
+    gtk_container_add(GTK_CONTAINER(window), container);
+    gtk_widget_set_size_request (container, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-   da = gtk_drawing_area_new();
-   gtk_widget_set_size_request (da, 550, 550);
-   g_signal_connect (da, "draw", G_CALLBACK(draw_cb),  (gpointer) &sp);
+    da = gtk_drawing_area_new();
+    gtk_widget_set_size_request (da, 550, 550);
+    g_signal_connect (da, "draw", G_CALLBACK(draw_cb),  (gpointer) &sp);
 
-   gtk_fixed_put(GTK_FIXED(container), da, 30, 30);
-   gtk_widget_show(container);
-   gtk_widget_show(da);
-   gtk_widget_show (window);
+    gtk_fixed_put(GTK_FIXED(container), da, 30, 30);
+    gtk_widget_show(container);
+    gtk_widget_show(da);
+    gtk_widget_show (window);
 }
 
 static gboolean click(GtkWidget *button,GdkEventButton *event,gpointer data){
