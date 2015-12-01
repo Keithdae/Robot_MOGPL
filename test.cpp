@@ -1,6 +1,5 @@
 /* COMPILE USING:  g++ -Wall -pedantic -g -std=c++11 test.cpp graph.cpp `pkg-config --cflags --libs gtk+-3.0` -o fen*/
 #include <gtk/gtk.h>
-#include <sstream>
 #include "graph.h"
 
 using namespace std;
@@ -26,6 +25,7 @@ typedef struct {
 
    int n; // Nombre de lignes du probleme
    int m; // Nombre de colonnes du probleme 
+   int cas;
    string chaine_res;
 
    std::vector< std::vector<bool> > grid;  // true => obstacle ; false => libre
@@ -125,15 +125,21 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
    }
 
    /* draw path */
-   istringstream iss( p->chaine_res ); 
-   char* mot = getline( iss, mot, ' ' );
+   ifstream res(p->chaine_res);
+   if(!res.is_open())
+   {
+    cerr << "Échec de l'ouverture du fichier!" << endl; 
+   }
+   string mot;
+   res >> mot;
    int x = p->xStart, x1;
    int y = p->yStart, y1;
    int dir = p->dirStart;
    cairo_set_source_rgb(cr, 0., 0., 0.);
    cairo_set_line_width(cr,4);
-    while ( getline( iss, mot, ' ' ) ) 
+    while ( x != p->xGoal || y != p->yGoal) 
     { 
+        res >> mot;
         if(mot == "D")
         {
             dir = (dir + 1) % 4;
@@ -225,7 +231,7 @@ static gboolean clicked(GtkWidget *widget, gpointer data)
 int main (int argc, char *argv[])
 {
    graph solver = graph();
-   solver.readProblems("test");
+   solver.readProblems("testGen");
    struct_problem sp;
    sp.xStart = solver.getProblems()[0].xStart;
    sp.yStart = solver.getProblems()[0].yStart;
@@ -234,7 +240,7 @@ int main (int argc, char *argv[])
    sp.dirStart = solver.getProblems()[0].dirStart;
    sp.n = solver.getProblems()[0].n; 
    sp.m = solver.getProblems()[0].m; 
-   sp.chaine_res = "12 D a1 D a3 a3 D a1 a3 D a1 G a2";
+   sp.chaine_res = "testGenResults";
    sp.grid = solver.getProblems()[0].grid; 
 
    gtk_init (&argc, &argv);
