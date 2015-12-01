@@ -336,9 +336,9 @@ void graph::solveAllProblems()
 {
 	ofstream out(this->fileNameOutput);
 	
-	float timer[10];
+	/*float timer[10];
 	struct timeval tbegin, tend;
-	float texec = 0.f;
+	float texec = 0.f;*/
 	
 	
 	if(out.is_open())
@@ -346,26 +346,26 @@ void graph::solveAllProblems()
 		for(unsigned int i=0; i<problems.size(); i++)
 		{
 			// Timer start
-			gettimeofday(&tbegin, NULL);
+			//gettimeofday(&tbegin, NULL);
 			
 			string solution = bfs(problems[i]);
 			
 			// Timer end
-			gettimeofday(&tend, NULL);
+			/*gettimeofday(&tend, NULL);
 			texec = ((float)(tend.tv_sec - tbegin.tv_sec)) + (tend.tv_usec - tbegin.tv_usec) / 1000000.f;
-			timer[i] = texec;
+			timer[i] = texec;*/
 			
 			out << solution;
 		}
 	}
 	
-	float averageTime = 0.f;
+	/*float averageTime = 0.f;
 	for(int j=0; j<10; j++)
 		averageTime += timer[j];
 	
 	averageTime = averageTime / 10.f;
 	
-	out << averageTime;
+	out << averageTime;*/
 	
 	problems.clear();
 	
