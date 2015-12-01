@@ -320,7 +320,7 @@ string graph::bfs(const problem p)
 	node par = bestGoal;
 	chemin.push_back(par);
 	cout << "la longueur du plus court chemin est: " << bestGoal.distance << endl;
-	while(par.parent != NULL) // ATTENTION CHEMIN INDIQUE A L'ENVERS
+	while(par.parent != NULL)
 	{
 		par = *par.parent;
 		chemin.insert(chemin.begin(),par);
@@ -335,14 +335,40 @@ string graph::bfs(const problem p)
 void graph::solveAllProblems()
 {
 	ofstream out(this->fileNameOutput);
+	
+	float timer[10];
+	struct timeval tbegin, tend;
+	float texec = 0.f;
+	
+	
 	if(out.is_open())
 	{
 		for(unsigned int i=0; i<problems.size(); i++)
 		{
+			// Timer start
+			gettimeofday(&tbegin, NULL);
+			
 			string solution = bfs(problems[i]);
+			
+			// Timer end
+			gettimeofday(&tend, NULL);
+			texec = ((float)(tend.tv_sec - tbegin.tv_sec)) + (tend.tv_usec - tbegin.tv_usec) / 1000000.f;
+			timer[i] = texec;
+			
 			out << solution;
 		}
 	}
+	
+	float averageTime = 0.f;
+	for(int j=0; j<10; j++)
+		averageTime += timer[j];
+	
+	averageTime = averageTime / 10.f;
+	
+	out << averageTime;
+	
+	problems.clear();
+	
 	out.close();
 }
 
