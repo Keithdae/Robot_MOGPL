@@ -1,4 +1,4 @@
-/* COMPILE USING:  g++ -Wall -pedantic -g -std=c++11 test.cpp graph.cpp `pkg-config --cflags --libs gtk+-3.0` -o fen*/
+/* COMPILE USING:  g++ -Wall -pedantic -g -std=c++11 graphic.cpp graph.cpp `pkg-config --cflags --libs gtk+-3.0` -o fen*/
 #include <gtk/gtk.h>
 #include "graph.h"
 
@@ -27,9 +27,11 @@ typedef struct {
    std::vector< std::vector<bool> > grid;  // true => obstacle ; false => libre
 } struct_problem ;
 
+struct_problem sp;
+
 static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 {   
-   struct_problem *p = (struct_problem *) data;
+   struct_problem *p = &sp;
    int case_width = 500/((p->n < p->m)?p->m:p->n);
 
    /* Set color for background */
@@ -222,8 +224,7 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
 
 void solution_window(){
     graph solver = graph();
-    solver.readProblems("test");
-    struct_problem sp;
+    solver.readProblems("testGen");
     sp.xStart = solver.getProblems()[0].xStart;
     sp.yStart = solver.getProblems()[0].yStart;
     sp.xGoal = solver.getProblems()[0].xGoal;
@@ -231,7 +232,7 @@ void solution_window(){
     sp.dirStart = solver.getProblems()[0].dirStart;
     sp.n = solver.getProblems()[0].n; 
     sp.m = solver.getProblems()[0].m; 
-    sp.chaine_res = "testResults";
+    sp.chaine_res = "testGenResults";
     sp.grid = solver.getProblems()[0].grid; 
 
     GtkWidget *window;
@@ -248,7 +249,7 @@ void solution_window(){
 
     da = gtk_drawing_area_new();
     gtk_widget_set_size_request (da, 550, 550);
-    g_signal_connect (da, "draw", G_CALLBACK(draw_cb),  (gpointer) &sp);
+    g_signal_connect (da, "draw", G_CALLBACK(draw_cb), NULL);
 
     gtk_fixed_put(GTK_FIXED(container), da, 30, 30);
     gtk_widget_show(container);
