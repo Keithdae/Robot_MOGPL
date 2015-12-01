@@ -7,9 +7,6 @@ using namespace std;
 #define WINDOW_WIDTH  800
 #define WINDOW_HEIGHT 600
 
-GtkWidget *window;
-GtkWidget *da, *container, *button;
-
 typedef struct {
    int xStart;
    int yStart;
@@ -129,13 +126,14 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
    {
     cerr << "Échec de l'ouverture du fichier!" << endl; 
    }
-   string mot;
-   res >> mot;
-   int x = p->xStart, x1;
-   int y = p->yStart, y1;
-   int dir = p->dirStart;
-   cairo_set_source_rgb(cr, 0., 0., 0.);
-   cairo_set_line_width(cr,4);
+   else{
+    string mot;
+    res >> mot;
+    int x = p->xStart, x1;
+    int y = p->yStart, y1;
+    int dir = p->dirStart;
+    cairo_set_source_rgb(cr, 0., 0., 0.);
+    cairo_set_line_width(cr,4);
     while ( x != p->xGoal || y != p->yGoal) 
     { 
         res >> mot;
@@ -217,56 +215,96 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
             x = x1; y = y1;
         }
     } 
-
+    res.close();
+    }
    return FALSE;
 }
 
-static gboolean clicked(GtkWidget *widget, gpointer data)
-{
-    gtk_widget_set_visible(da,TRUE);
-    return TRUE;
-}
+void solution_window(){
+    graph solver = graph();
+    solver.readProblems("test");
+    struct_problem sp;
+    sp.xStart = solver.getProblems()[0].xStart;
+    sp.yStart = solver.getProblems()[0].yStart;
+    sp.xGoal = solver.getProblems()[0].xGoal;
+    sp.yGoal = solver.getProblems()[0].yGoal;
+    sp.dirStart = solver.getProblems()[0].dirStart;
+    sp.n = solver.getProblems()[0].n; 
+    sp.m = solver.getProblems()[0].m; 
+    sp.chaine_res = "testResults";
+    sp.grid = solver.getProblems()[0].grid; 
+    GtkWidget *window;
+    GtkWidget *da, *container;
+    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(window), "La balade du Robot...");
+    gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+    g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
-int main (int argc, char *argv[])
-{
-   graph solver = graph();
-   solver.readProblems("testGen");
-   struct_problem sp;
-   sp.xStart = solver.getProblems()[0].xStart;
-   sp.yStart = solver.getProblems()[0].yStart;
-   sp.xGoal = solver.getProblems()[0].xGoal;
-   sp.yGoal = solver.getProblems()[0].yGoal;
-   sp.dirStart = solver.getProblems()[0].dirStart;
-   sp.n = solver.getProblems()[0].n; 
-   sp.m = solver.getProblems()[0].m; 
-   sp.chaine_res = "testGenResults";
-   sp.grid = solver.getProblems()[0].grid; 
-
-   gtk_init (&argc, &argv);
-
-   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-   gtk_window_set_title(GTK_WINDOW(window), "La balade du Robot...");
-   gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-   g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
-
-   container = gtk_fixed_new();
+    container = gtk_fixed_new();
    gtk_container_add(GTK_CONTAINER(window), container);
    gtk_widget_set_size_request (container, WINDOW_WIDTH, WINDOW_HEIGHT);
 
    da = gtk_drawing_area_new();
    gtk_widget_set_size_request (da, 550, 550);
-   g_signal_connect (da, "draw", G_CALLBACK(draw_cb),  &sp);
-
-   button = gtk_button_new_with_label("Solution");
-   gtk_widget_set_size_request (button, 90, 20);
-   g_signal_connect (button, "clicked", G_CALLBACK(clicked),  NULL);
+   g_signal_connect (da, "draw", G_CALLBACK(draw_cb),  (gpointer) &sp);
 
    gtk_fixed_put(GTK_FIXED(container), da, 30, 30);
-   gtk_fixed_put(GTK_FIXED(container), button, 600, 50);
    gtk_widget_show(container);
    gtk_widget_show(da);
-   gtk_widget_show(button);
    gtk_widget_show (window);
+}
+
+static gboolean click(GtkWidget *button,GdkEventButton *event,gpointer data){
+    GtkWidget* p = (GtkWidget*) data;
+    gtk_widget_set_visible(p,FALSE);
+    solution_window();
+    return FALSE;
+}
+
+void first_window(){
+    GtkWidget *window1;
+    GtkWidget *container1, *spinB1, *spinB2, *spinB3, *lab1, *lab2, *lab3, *button;
+    window1 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(window1), "La balade du Robot...");
+    gtk_window_set_position(GTK_WINDOW(window1), GTK_WIN_POS_CENTER);
+    g_signal_connect (window1, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+
+    container1 = gtk_fixed_new();
+    gtk_container_add(GTK_CONTAINER(window1), container1);
+    gtk_widget_set_size_request (container1, 500, 170);
+
+    GtkAdjustment * ad = gtk_adjustment_new (10,10,50,1,0,0);
+    GtkAdjustment * ad1 = gtk_adjustment_new (10,10,50,1,0,0);
+    GtkAdjustment * ad2 = gtk_adjustment_new (0,0,500,1,0,0);
+    spinB3 = gtk_spin_button_new(ad2,0,0);
+    spinB1 = gtk_spin_button_new(ad,0,0);
+    spinB2 = gtk_spin_button_new(ad1,0,0);
+
+    lab1 = gtk_label_new ("Nombre de lignes:");
+    lab2 = gtk_label_new ("Nombre de colones:");
+    lab3 = gtk_label_new ("Nombre d'obstacles:");
+
+    button = gtk_button_new_with_label("Générer grille");
+    gtk_widget_set_size_request(button,110,30);
+
+    gtk_fixed_put(GTK_FIXED(container1), lab1, 30, 30);
+    gtk_fixed_put(GTK_FIXED(container1), lab2, 180, 30);
+    gtk_fixed_put(GTK_FIXED(container1), lab3, 330, 30);
+    gtk_fixed_put(GTK_FIXED(container1), spinB1, 40, 60);
+    gtk_fixed_put(GTK_FIXED(container1), spinB2, 200, 60);
+    gtk_fixed_put(GTK_FIXED(container1), spinB3, 360, 60);
+    gtk_fixed_put(GTK_FIXED(container1), button, 195, 120);
+
+    g_signal_connect(button,"button-press-event",G_CALLBACK(click),window1);
+
+    gtk_widget_show_all (window1);
+}
+
+int main (int argc, char *argv[])
+{
+   gtk_init (&argc, &argv);
+
+   first_window();
 
    gtk_main ();
 
