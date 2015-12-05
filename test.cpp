@@ -166,7 +166,7 @@ draw_cb (GtkWidget * widget, cairo_t * cr, gpointer data)
 		}
 	      else if (mot == "G")
 		{
-		  dir = (dir - 1) % 4;
+		  dir = ((4+((dir - 1) % 4))%4);
 		}
 	      else if (mot == "a1")
 		{
@@ -272,18 +272,24 @@ draw_cb (GtkWidget * widget, cairo_t * cr, gpointer data)
 int
 main (int argc, char *argv[])
 {
-  graph solver = graph ();
-  solver.readProblems ("testGen");
+  string fichier;
+  cout << "Entrez le nom du fichier: " << endl;
+  cin >> fichier;
   struct_problem sp;
-  sp.xStart = solver.getProblems ()[0].xStart;
-  sp.yStart = solver.getProblems ()[0].yStart;
-  sp.xGoal = solver.getProblems ()[0].xGoal;
-  sp.yGoal = solver.getProblems ()[0].yGoal;
-  sp.dirStart = solver.getProblems ()[0].dirStart;
-  sp.n = solver.getProblems ()[0].n;
-  sp.m = solver.getProblems ()[0].m;
-  sp.chaine_res = "testGenResults";
-  sp.grid = solver.getProblems ()[0].grid;
+  graph solver = graph ();
+  if(solver.readProblems (fichier)){
+  	vector<problem> prob = solver.getProblems();
+  	solver.solveAllProblems();
+	sp.xStart = prob[0].xStart;
+	sp.yStart = prob[0].yStart;
+	sp.xGoal = prob[0].xGoal;
+	sp.yGoal = prob[0].yGoal;
+	sp.dirStart = prob[0].dirStart;
+	sp.n = prob[0].n;
+	sp.m = prob[0].m;
+	sp.chaine_res = fichier + "Results";
+	sp.grid = prob[0].grid;
+  }
 
   gtk_init (&argc, &argv);
 

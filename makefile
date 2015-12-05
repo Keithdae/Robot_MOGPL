@@ -13,7 +13,7 @@ main.o: graph.h
 	$(CXX) -o $@ -c $< $(CXXFLAGS)
 
 clean:
-	rm -rf *.o
+	rm -rf *.o *~
 
 mrproper: clean
 	rm -rf $(EXEC)

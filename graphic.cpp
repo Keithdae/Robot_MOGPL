@@ -145,7 +145,7 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data)
         }
         else if (mot == "G")
         {
-            dir = (dir - 1) % 4;
+            dir = (dir - 1 + 4) % 4;
         }
         else if(mot == "a1")
         {
