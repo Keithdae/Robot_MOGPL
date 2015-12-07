@@ -7,9 +7,6 @@ using namespace std;
 #define WINDOW_WIDTH  620
 #define WINDOW_HEIGHT 620
 
-GtkWidget *window;
-GtkWidget *da, *container;
-
 typedef struct
 {
   int xStart;
@@ -27,6 +24,7 @@ typedef struct
   int n;			// Nombre de lignes du probleme
   int m;			// Nombre de colonnes du probleme 
   string chaine_res;
+  int nb;
 
     std::vector < std::vector < bool > >grid;	// true => obstacle ; false => libre
 } struct_problem;
@@ -35,6 +33,7 @@ static gboolean
 draw_cb (GtkWidget * widget, cairo_t * cr, gpointer data)
 {
   struct_problem *p = (struct_problem *) data;
+
   int case_width = 500 / ((p->n < p->m) ? p->m : p->n);
 
   /* Set color for background */
@@ -83,63 +82,6 @@ draw_cb (GtkWidget * widget, cairo_t * cr, gpointer data)
 	}
     }
 
-  /* draw start circle */
-  cairo_set_source_rgb (cr, 0., 0., 0.);
-  cairo_set_line_width (cr, 2);
-  cairo_arc (cr, 25 + p->yStart * case_width, 25 + p->xStart * case_width,
-	     0.25 * case_width, 0, 2 * G_PI);
-  cairo_fill (cr);
-  /* draw goal circle */
-  cairo_arc (cr, 25 + p->yGoal * case_width, 25 + p->xGoal * case_width,
-	     0.25 * case_width, 0, 2 * G_PI);
-  cairo_fill (cr);
-  /* draw start direction arrow */
-  switch (p->dirStart)
-    {
-    case 0:
-      cairo_move_to (cr, 25 + p->yStart * case_width - 0.1 * case_width,
-		     25 + p->xStart * case_width - 0.25 * case_width);
-      cairo_line_to (cr, 25 + p->yStart * case_width,
-		     25 + p->xStart * case_width - 0.4 * case_width);
-      cairo_line_to (cr, 25 + p->yStart * case_width + 0.1 * case_width,
-		     25 + p->xStart * case_width - 0.25 * case_width);
-      cairo_close_path (cr);
-      cairo_fill (cr);
-      break;
-    case 1:
-      cairo_move_to (cr, 25 + p->yStart * case_width + 0.25 * case_width,
-		     25 + p->xStart * case_width - 0.1 * case_width);
-      cairo_line_to (cr, 25 + p->yStart * case_width + case_width * 0.4,
-		     25 + p->xStart * case_width);
-      cairo_line_to (cr, 25 + p->yStart * case_width + 0.25 * case_width,
-		     25 + p->xStart * case_width + 0.1 * case_width);
-      cairo_close_path (cr);
-      cairo_fill (cr);
-      break;
-    case 2:
-      cairo_move_to (cr, 25 + p->yStart * case_width - 0.1 * case_width,
-		     25 + p->xStart * case_width + 0.25 * case_width);
-      cairo_line_to (cr, 25 + p->yStart * case_width,
-		     25 + p->xStart * case_width + 0.4 * case_width);
-      cairo_line_to (cr, 25 + p->yStart * case_width + 0.1 * case_width,
-		     25 + p->xStart * case_width + 0.25 * case_width);
-      cairo_close_path (cr);
-      cairo_fill (cr);
-      break;
-    case 3:
-      cairo_move_to (cr, 25 + p->yStart * case_width - 0.25 * case_width,
-		     25 + p->xStart * case_width - 0.1 * case_width);
-      cairo_line_to (cr, 25 + p->yStart * case_width - case_width * 0.4,
-		     25 + p->xStart * case_width);
-      cairo_line_to (cr, 25 + p->yStart * case_width - 0.25 * case_width,
-		     25 + p->xStart * case_width + 0.1 * case_width);
-      cairo_close_path (cr);
-      cairo_fill (cr);
-      break;
-    default:
-      cairo_fill (cr);
-    }
-
   /* draw path */
   ifstream res (p->chaine_res);
   if (!res.is_open ())
@@ -149,6 +91,8 @@ draw_cb (GtkWidget * widget, cairo_t * cr, gpointer data)
   else
     {
       string mot;
+      for(int i=0; i<p->nb; i++)
+      	getline(res,mot);
       res >> mot;
       if (mot.compare("-1") != 0)
 	{
@@ -265,6 +209,65 @@ draw_cb (GtkWidget * widget, cairo_t * cr, gpointer data)
 	  cout << "Pas de chemin trouvé!" << endl;
 	}
     }
+
+    /* draw goal circle */
+  cairo_set_source_rgb (cr, 1., 0., 0.);
+  cairo_set_line_width (cr, 2);
+  cairo_arc (cr, 25 + p->yGoal * case_width, 25 + p->xGoal * case_width,
+	     0.25 * case_width, 0, 2 * G_PI);
+  cairo_fill (cr);
+  /* draw start circle */
+  cairo_set_source_rgb (cr, 0., 1., 0.);
+  cairo_arc (cr, 25 + p->yStart * case_width, 25 + p->xStart * case_width,
+	     0.25 * case_width, 0, 2 * G_PI);
+  cairo_fill (cr);
+  cairo_set_source_rgb (cr, 0., 0., 0.);
+  /* draw start direction arrow */
+  switch (p->dirStart)
+    {
+    case 0:
+      cairo_move_to (cr, 25 + p->yStart * case_width - 0.1 * case_width,
+		     25 + p->xStart * case_width - 0.25 * case_width);
+      cairo_line_to (cr, 25 + p->yStart * case_width,
+		     25 + p->xStart * case_width - 0.7 * case_width);
+      cairo_line_to (cr, 25 + p->yStart * case_width + 0.1 * case_width,
+		     25 + p->xStart * case_width - 0.25 * case_width);
+      cairo_close_path (cr);
+      cairo_fill (cr);
+      break;
+    case 1:
+      cairo_move_to (cr, 25 + p->yStart * case_width + 0.25 * case_width,
+		     25 + p->xStart * case_width - 0.1 * case_width);
+      cairo_line_to (cr, 25 + p->yStart * case_width + case_width * 0.7,
+		     25 + p->xStart * case_width);
+      cairo_line_to (cr, 25 + p->yStart * case_width + 0.25 * case_width,
+		     25 + p->xStart * case_width + 0.1 * case_width);
+      cairo_close_path (cr);
+      cairo_fill (cr);
+      break;
+    case 2:
+      cairo_move_to (cr, 25 + p->yStart * case_width - 0.1 * case_width,
+		     25 + p->xStart * case_width + 0.25 * case_width);
+      cairo_line_to (cr, 25 + p->yStart * case_width,
+		     25 + p->xStart * case_width + 0.7 * case_width);
+      cairo_line_to (cr, 25 + p->yStart * case_width + 0.1 * case_width,
+		     25 + p->xStart * case_width + 0.25 * case_width);
+      cairo_close_path (cr);
+      cairo_fill (cr);
+      break;
+    case 3:
+      cairo_move_to (cr, 25 + p->yStart * case_width - 0.25 * case_width,
+		     25 + p->xStart * case_width - 0.1 * case_width);
+      cairo_line_to (cr, 25 + p->yStart * case_width - case_width * 0.7,
+		     25 + p->xStart * case_width);
+      cairo_line_to (cr, 25 + p->yStart * case_width - 0.25 * case_width,
+		     25 + p->xStart * case_width + 0.1 * case_width);
+      cairo_close_path (cr);
+      cairo_fill (cr);
+      break;
+    default:
+      cairo_fill (cr);
+    }
   return FALSE;
 }
 
@@ -273,45 +276,64 @@ int
 main (int argc, char *argv[])
 {
   string fichier;
+  int nbprob = 0;
+  bool firstTime = true;
   cout << "Entrez le nom du fichier: " << endl;
   cin >> fichier;
   struct_problem sp;
   graph solver = graph ();
-  if(solver.readProblems (fichier)){
-  	vector<problem> prob = solver.getProblems();
-  	solver.solveAllProblems();
-	sp.xStart = prob[0].xStart;
-	sp.yStart = prob[0].yStart;
-	sp.xGoal = prob[0].xGoal;
-	sp.yGoal = prob[0].yGoal;
-	sp.dirStart = prob[0].dirStart;
-	sp.n = prob[0].n;
-	sp.m = prob[0].m;
-	sp.chaine_res = fichier + "Results";
-	sp.grid = prob[0].grid;
-  }
+  vector<problem> prob;
 
   gtk_init (&argc, &argv);
+  while(1){
+  if(solver.readProblems (fichier)){
+  	if(firstTime)
+  	{
+  		prob = solver.getProblems();
+  		solver.solveAllProblems();
+  		firstTime = false;
+  	}
+  	cout << "Entrez le numéro du problème: " << endl;
+  	cin >> nbprob;
+  	if(nbprob == -1)
+  		break;
+	sp.xStart = prob[nbprob].xStart;
+	sp.yStart = prob[nbprob].yStart;
+	sp.xGoal = prob[nbprob].xGoal;
+	sp.yGoal = prob[nbprob].yGoal;
+	sp.dirStart = prob[nbprob].dirStart;
+	sp.n = prob[nbprob].n;
+	sp.m = prob[nbprob].m;
+	sp.chaine_res = fichier + "Results";
+	sp.grid = prob[nbprob].grid;
+	sp.nb = nbprob;
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (window), "La balade du Robot...");
-  gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
-  g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+	GtkWidget *window;
+	GtkWidget *da, *container;
 
-  container = gtk_fixed_new ();
-  gtk_container_add (GTK_CONTAINER (window), container);
-  gtk_widget_set_size_request (container, WINDOW_WIDTH, WINDOW_HEIGHT);
+	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_title (GTK_WINDOW (window), "La balade du Robot...");
+	gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
+	g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
-  da = gtk_drawing_area_new ();
-  gtk_widget_set_size_request (da, 550, 550);
-  g_signal_connect (da, "draw", G_CALLBACK (draw_cb), &sp);
+	container = gtk_fixed_new ();
+	gtk_container_add (GTK_CONTAINER (window), container);
+	gtk_widget_set_size_request (container, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-  gtk_fixed_put (GTK_FIXED (container), da, 30, 30);
-  gtk_widget_show (container);
-  gtk_widget_show (da);
-  gtk_widget_show (window);
+	da = gtk_drawing_area_new ();
+	gtk_widget_set_size_request (da, 550, 550);
+	g_signal_connect (da, "draw", G_CALLBACK (draw_cb), &sp);
 
-  gtk_main ();
+	gtk_fixed_put (GTK_FIXED (container), da, 30, 30);
+	gtk_widget_show (container);
+	gtk_widget_show (da);
+	gtk_widget_show (window);
+	  
+	gtk_main ();
+  }
 
+
+  } // while
+  prob.clear();
   return 0;
 }
